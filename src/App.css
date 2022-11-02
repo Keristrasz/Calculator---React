@@ -1,0 +1,124 @@
+body {
+  background-color: #d9d9d9;
+  font-family: digital;
+
+}
+
+main {
+  height: 520px;
+  width: 350px;
+  background-color: #ebffeb;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+.display {
+  width: 320px;
+  height: 40px;
+  background-color: #787878;
+  color: #ffffff;
+  display: grid;
+  justify-content: end;
+  align-content: center;
+  margin: auto;
+  
+  
+  
+}
+
+#upperDisplay {
+  margin-top: 15px;
+}
+
+#display {
+  margin-bottom: 10px;
+}
+
+
+#buttonGrid {
+  
+  display: grid;
+  grid-template-columns: 80px 80px 80px 80px;
+  justify-content: center;
+  align-content: center;
+
+}
+
+#add {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
+#equals {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 4;
+  grid-row-end: 6;
+}
+
+#zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
+  grid-row-end: 6;
+}
+
+button {
+  height: 80px;
+  width: 80px;
+  font-family: arial;
+  font-size: 25px;
+  background-color: yellow;
+  border: 1px solid grey;
+  
+}
+
+.notNumbers {
+  background-color: #ff8ffb;
+}
+
+#equals, #clear  {
+  background-color: #a353ee;
+}
+
+
+#clear {
+  color: red;
+
+}
+
+
+button:hover, #equals:hover, #clear:hover {
+  background-color: orange;
+  color: white;
+  outline: 0.15em solid #ff3838;
+  z-index: 3;
+}
+
+button:active, #equals:active, #clear:active {
+  background-color: red;
+}
+
+#zero {
+  width: 160px;
+}
+
+#equals, #add {
+  height: 160px;
+  width: 80px;
+
+}
+
+ h2 {
+  margin-top: 8px;
+  margin-right: 7px;
+}
+
+h4 {
+  margin-right: 7px
+}
