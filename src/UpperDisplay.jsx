@@ -1,6 +1,6 @@
 import './App.css'
 
-export default function UpperDisplay({upperDisplayNumber}) {
+export default function UpperDisplay({upperDisplayNumber, realCalculation}) {
   return (
     <div id="upperDisplay" className="display">
       

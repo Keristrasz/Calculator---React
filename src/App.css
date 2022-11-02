@@ -117,8 +117,10 @@ button:active, #equals:active, #clear:active {
  h2 {
   margin-top: 8px;
   margin-right: 7px;
+  font-family: Orbitron;
 }
 
 h4 {
-  margin-right: 7px
+  margin-right: 7px;
+  font-family: Orbitron;
 }

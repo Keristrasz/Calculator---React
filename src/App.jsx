@@ -7,15 +7,16 @@ import React from 'react'
 
 export default function App() {
 
-const [lowerDisplayNumber, setLowerDisplayNumber] = React.useState(5);
-const [upperDisplayNumber, setUpperDisplayNumber] = React.useState(6);
+  const [lowerDisplayNumber, setLowerDisplayNumber] = React.useState(0);
+  const [upperDisplayNumber, setUpperDisplayNumber] = React.useState(0);
+  const [realCalculation, setRealCalculation] = React.useState(0);
 
-  
+
   return (
     <main>
-      <UpperDisplay upperDisplayNumber={upperDisplayNumber} />
+      <UpperDisplay upperDisplayNumber={upperDisplayNumber} realCalculation={realCalculation} />
       <LowerDisplay lowerDisplayNumber={lowerDisplayNumber} />
-      <Buttons upperDisplayNumber={upperDisplayNumber} lowerDisplayNumber={lowerDisplayNumber} setLowerDisplayNumber={setLowerDisplayNumber} setUpperDisplayNumber={setUpperDisplayNumber} />
+      <Buttons upperDisplayNumber={upperDisplayNumber} lowerDisplayNumber={lowerDisplayNumber} setLowerDisplayNumber={setLowerDisplayNumber} setUpperDisplayNumber={setUpperDisplayNumber} realCalculation={realCalculation} setRealCalculation={setRealCalculation} />
     </main>
   )
 }
