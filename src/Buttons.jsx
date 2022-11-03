@@ -1,5 +1,6 @@
 import "./App.css";
 import { numbersForState } from "./numbersForState.js";
+import React from "react";
 
 var errorMessage = false;
 
@@ -11,6 +12,12 @@ export default function Buttons({
   realCalculation,
   setRealCalculation,
 }) {
+  const prevRealCalculation = React.useRef();
+  React.useEffect(() => {
+    prevRealCalculation.current = realCalculation;
+  }, [realCalculation]);
+  // console.log(prevRealCalculation.current);
+
   let handleClick = (numberOrSymbol) => {
     if (realCalculation >= 99999999999999 && errorMessage === false) {
       errorMessage = true;
@@ -18,42 +25,84 @@ export default function Buttons({
       setRealCalculation(0);
     } else if (typeof numberOrSymbol === "string" || errorMessage === true) {
       if (numberOrSymbol === "clear") {
-        setLowerDisplayNumber(0);
-        setUpperDisplayNumber(0);
-        setRealCalculation(0);
+        setLowerDisplayNumber("0");
+        setUpperDisplayNumber("");
+        setRealCalculation("");
         errorMessage = false;
-        console.log(errorMessage)
-      } else if (numberOrSymbol === "+") {
-        setLowerDisplayNumber(" +");
-        setUpperDisplayNumber(realCalculation + " +");
-        setRealCalculation(prevValue => prevValue + realCalculation)
-      } else if (numberOrSymbol === "-") {
-        setLowerDisplayNumber(" -");
-        setUpperDisplayNumber(realCalculation + " -");
-      } else if (numberOrSymbol === "/") {
-        setLowerDisplayNumber(" /");
-        setUpperDisplayNumber(realCalculation + " /");
-      } else if (numberOrSymbol === "*") {
-        setLowerDisplayNumber(" *");
-        setUpperDisplayNumber(realCalculation + " *");
-      } else if (numberOrSymbol === "=") {
-        setUpperDisplayNumber(realCalculation + " *")
-        setLowerDisplayNumber(lowerDisplayNumber + realCalculation);
+
+        // Operation: *** /// --- +++
+      } else if (
+        numberOrSymbol === "+" ||
+        numberOrSymbol === "-" ||
+        numberOrSymbol === "*" ||
+        numberOrSymbol === "/"
+      ) {
+        setLowerDisplayNumber(numberOrSymbol);
+        setUpperDisplayNumber((prevValue) => prevValue + numberOrSymbol);
+     //   setRealCalculation((prevValue) => prevValue + numberOrSymbol);
+
+        //Operation: ... ,,,
+      } else if (numberOrSymbol === "." || numberOrSymbol === ",") {
+        setLowerDisplayNumber((prevValue) => prevValue + numberOrSymbol);
+        setUpperDisplayNumber((prevValue) => `${prevValue}${numberOrSymbol}`);
+
+        //Operation: === Enter
+      } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
+        setRealCalculation(eval(upperDisplayNumber));
+
+        React.useEffect(() => {
+               setUpperDisplayNumber(
+          (prevValue) => prevValue + "=" + realCalculation
+        );
+        setLowerDisplayNumber("= " + realCalculation);
+        console.log(realCalculation);
+        console.log(prevRealCalculation.current);
+        }, [realCalculation])
+        
+   
+        
+        
+
+
+
+
       }
-    } else if (typeof realCalculation === "number") {
-      if (errorMessage === false) {
+    } else if (typeof numberOrSymbol === "number" && errorMessage === false) {
+      if (
+        typeof numberOrSymbol === "number" &&
+        typeof prevRealCalculation.current === "number"
+      ) {
         setLowerDisplayNumber(
           (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) * 1
+        );
+        setUpperDisplayNumber(
+          (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
         setRealCalculation(
           (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) * 1
         );
-
-        console.log(realCalculation + errorMessage);
+      } else if (typeof numberOrSymbol === "number") {
+        setLowerDisplayNumber(
+          (prevValue) => prevValue.toString() + numberOrSymbol.toString()
+        );
+        setRealCalculation((prevValue) => prevValue + numberOrSymbol);
+        setUpperDisplayNumber((prevValue) => prevValue + numberOrSymbol);
       }
     }
   };
 
+  console.log(realCalculation);
+  let handleKeyDown = (event) => {
+    event.key === "*" ||
+      event.key === "/" ||
+      event.key === "-" ||
+      event.key === "+" ||
+      event.key === "Enter" ||
+      event.key === "," ||
+      event.key === "."
+      ? handleClick(event.key)
+      : handleClick(Number(event.key));
+  };
 
   React.useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -61,8 +110,7 @@ export default function Buttons({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [volume, power, bass]);
-  
+  }, [realCalculation]);
 
   return (
     <div id="buttonGrid">
