@@ -12,34 +12,47 @@ export default function Buttons({
   realCalculation,
   setRealCalculation,
 }) {
-  const prevRealCalculation = React.useRef();
+  const prevLowerNumber = React.useRef();
+
   React.useEffect(() => {
-    prevRealCalculation.current = realCalculation;
-  }, [realCalculation]);
+    prevLowerNumber.current = lowerDisplayNumber;
+  }, [lowerDisplayNumber]);
   // console.log(prevRealCalculation.current);
 
   let handleClick = (numberOrSymbol) => {
-    if (realCalculation >= 99999999999999 && errorMessage === false) {
+  console.log(typeof numberOrSymbol)
+  console.log(prevLowerNumber)
+    if (lowerDisplayNumber >= 999999999 && errorMessage === false) {
       errorMessage = true;
       setLowerDisplayNumber("ERROR - DIGIT LIMIT");
-      setRealCalculation(0);
-    } else if (typeof numberOrSymbol === "string" || errorMessage === true) {
+      
+      console.log(error);
+    } 
+    
+    else if (typeof numberOrSymbol === "string" || errorMessage === true) {
       if (numberOrSymbol === "clear") {
         setLowerDisplayNumber("0");
         setUpperDisplayNumber("");
         setRealCalculation("");
         errorMessage = false;
+        console.log("errormess is flase");
 
         // Operation: *** /// --- +++
-      } else if (
+      } else if (typeof prevLowerNumber.current === "string" && typeof numberOrSymbol === "string") {
+      setLowerDisplayNumber("WRONG INPUT");
+    //  console.log(typeof prevLowerNumber.current)
+    }
+      else if (
         numberOrSymbol === "+" ||
         numberOrSymbol === "-" ||
         numberOrSymbol === "*" ||
         numberOrSymbol === "/"
       ) {
-        setLowerDisplayNumber(numberOrSymbol);
-        setUpperDisplayNumber((prevValue) => prevValue + numberOrSymbol);
-     //   setRealCalculation((prevValue) => prevValue + numberOrSymbol);
+        setLowerDisplayNumber(numberOrSymbol.toString());
+        setUpperDisplayNumber(
+          (prevValue) => prevValue.toString() + numberOrSymbol.toString()
+        );
+        console.log("settingnumberorsymbol");
 
         //Operation: ... ,,,
       } else if (numberOrSymbol === "." || numberOrSymbol === ",") {
@@ -49,68 +62,76 @@ export default function Buttons({
         //Operation: === Enter
       } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
         setRealCalculation(eval(upperDisplayNumber));
-
-        React.useEffect(() => {
-               setUpperDisplayNumber(
-          (prevValue) => prevValue + "=" + realCalculation
+        setLowerDisplayNumber("= " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000));
+        setUpperDisplayNumber(
+          (prevValue) => prevValue + " = " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000)
         );
-        setLowerDisplayNumber("= " + realCalculation);
-        console.log(realCalculation);
-        console.log(prevRealCalculation.current);
-        }, [realCalculation])
-        
-   
-        
-        
 
+        /// console.log(realCalculation);
 
-
-
+        console.log(numberOrSymbol);
       }
-    } else if (typeof numberOrSymbol === "number" && errorMessage === false) {
+    } 
+    
+    /// **** PART NUMBERS **** ///
+    
+    else if (typeof numberOrSymbol === "number" && errorMessage === false) {
       if (
         typeof numberOrSymbol === "number" &&
-        typeof prevRealCalculation.current === "number"
+        typeof prevLowerNumber.current === "number"
       ) {
         setLowerDisplayNumber(
-          (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) * 1
+          (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) *1
         );
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-        setRealCalculation(
-          (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) * 1
-        );
       } else if (typeof numberOrSymbol === "number") {
+      //  console.log(typeof numberOrSymbol);
         setLowerDisplayNumber(
+         numberOrSymbol
+        );
+
+        setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-        setRealCalculation((prevValue) => prevValue + numberOrSymbol);
-        setUpperDisplayNumber((prevValue) => prevValue + numberOrSymbol);
+        console.log("number insterted");
+        console.log(upperDisplayNumber);
+        
       }
     }
   };
 
-  console.log(realCalculation);
   let handleKeyDown = (event) => {
-    event.key === "*" ||
+    //preventing Enter to do its default function - clicking last clicked buttons
+   
+    if (numbersForState.allKeyboardKeys.includes(event.key)) {
+    event.preventDefault();
+      event.key === "*" ||
       event.key === "/" ||
       event.key === "-" ||
       event.key === "+" ||
       event.key === "Enter" ||
-      event.key === "," ||
+      event.key === "=" ||
       event.key === "."
-      ? handleClick(event.key)
-      : handleClick(Number(event.key));
+        ? handleClick(event.key)
+        : event.key === ","
+        ? handleClick(".")
+        : handleClick(Number(event.key));
+    }
   };
 
-  React.useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
+  React.useEffect(
+    () => {
+      window.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [realCalculation]);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    },
+   
+    [lowerDisplayNumber]
+  );
 
   return (
     <div id="buttonGrid">

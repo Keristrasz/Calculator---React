@@ -14,7 +14,6 @@ export default function App() {
 
   return (
     <main>
-      <UpperDisplay upperDisplayNumber={realCalculation}  />
       <UpperDisplay upperDisplayNumber={upperDisplayNumber} realCalculation={realCalculation} />
       <LowerDisplay lowerDisplayNumber={lowerDisplayNumber} />
       <Buttons upperDisplayNumber={upperDisplayNumber} lowerDisplayNumber={lowerDisplayNumber} setLowerDisplayNumber={setLowerDisplayNumber} setUpperDisplayNumber={setUpperDisplayNumber} realCalculation={realCalculation} setRealCalculation={setRealCalculation} />
