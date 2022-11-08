@@ -9,14 +9,14 @@ export default function App() {
 
   const [lowerDisplayNumber, setLowerDisplayNumber] = React.useState(0);
   const [upperDisplayNumber, setUpperDisplayNumber] = React.useState("");
-  const [realCalculation, setRealCalculation] = React.useState(0);
+  
 
 
   return (
     <main>
-      <UpperDisplay upperDisplayNumber={upperDisplayNumber} realCalculation={realCalculation} />
+      <UpperDisplay upperDisplayNumber={upperDisplayNumber}  />
       <LowerDisplay lowerDisplayNumber={lowerDisplayNumber} />
-      <Buttons upperDisplayNumber={upperDisplayNumber} lowerDisplayNumber={lowerDisplayNumber} setLowerDisplayNumber={setLowerDisplayNumber} setUpperDisplayNumber={setUpperDisplayNumber} realCalculation={realCalculation} setRealCalculation={setRealCalculation} />
+      <Buttons upperDisplayNumber={upperDisplayNumber} lowerDisplayNumber={lowerDisplayNumber} setLowerDisplayNumber={setLowerDisplayNumber} setUpperDisplayNumber={setUpperDisplayNumber}  />
     </main>
   )
 }

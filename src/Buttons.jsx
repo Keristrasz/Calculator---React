@@ -4,43 +4,59 @@ import React from "react";
 
 var errorMessage = false;
 
+
 export default function Buttons({
   lowerDisplayNumber,
   setLowerDisplayNumber,
   setUpperDisplayNumber,
   upperDisplayNumber,
-  realCalculation,
-  setRealCalculation,
 }) {
   const prevLowerNumber = React.useRef();
 
   React.useEffect(() => {
     prevLowerNumber.current = lowerDisplayNumber;
   }, [lowerDisplayNumber]);
-  // console.log(prevRealCalculation.current);
+
 
   let handleClick = (numberOrSymbol) => {
-  console.log(typeof numberOrSymbol)
-  console.log(prevLowerNumber)
+
+/// SHOWS DIGIT LIMIT ERROR ///
+    
     if (lowerDisplayNumber >= 999999999 && errorMessage === false) {
       errorMessage = true;
       setLowerDisplayNumber("ERROR - DIGIT LIMIT");
       
       console.log(error);
     } 
-    
+
+      ///AFTER EQUAL RESETS LOWER AND UPPER DISPLAY ///
+
+    else if (errorMessage === true) {
+      
+        setLowerDisplayNumber("0");
+        setUpperDisplayNumber("");
+     
+        errorMessage = false;
+        handleClick(numberOrSymbol)
+
+        
+
+        /// *** STRING STRING STRING *** ///
+      
+    }
     else if (typeof numberOrSymbol === "string" || errorMessage === true) {
       if (numberOrSymbol === "clear") {
         setLowerDisplayNumber("0");
         setUpperDisplayNumber("");
-        setRealCalculation("");
+       
         errorMessage = false;
-        console.log("errormess is flase");
+
+        
 
         // Operation: *** /// --- +++
       } else if (typeof prevLowerNumber.current === "string" && typeof numberOrSymbol === "string") {
       setLowerDisplayNumber("WRONG INPUT");
-    //  console.log(typeof prevLowerNumber.current)
+      console.log(prevLowerNumber.current)
     }
       else if (
         numberOrSymbol === "+" ||
@@ -52,7 +68,7 @@ export default function Buttons({
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-        console.log("settingnumberorsymbol");
+    
 
         //Operation: ... ,,,
       } else if (numberOrSymbol === "." || numberOrSymbol === ",") {
@@ -61,19 +77,23 @@ export default function Buttons({
 
         //Operation: === Enter
       } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
-        setRealCalculation(eval(upperDisplayNumber));
+       
         setLowerDisplayNumber("= " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000));
         setUpperDisplayNumber(
           (prevValue) => prevValue + " = " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000)
+         
         );
+        errorMessage = true;
+ console.log(prevLowerNumber.current)
+  
+        
 
-        /// console.log(realCalculation);
+        
 
-        console.log(numberOrSymbol);
       }
     } 
     
-    /// **** PART NUMBERS **** ///
+    /// **** NUMBERS NUMBERS NUMBERS **** ///
     
     else if (typeof numberOrSymbol === "number" && errorMessage === false) {
       if (
@@ -87,7 +107,7 @@ export default function Buttons({
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
       } else if (typeof numberOrSymbol === "number") {
-      //  console.log(typeof numberOrSymbol);
+   
         setLowerDisplayNumber(
          numberOrSymbol
         );
@@ -95,8 +115,7 @@ export default function Buttons({
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-        console.log("number insterted");
-        console.log(upperDisplayNumber);
+
         
       }
     }
