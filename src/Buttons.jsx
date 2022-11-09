@@ -3,7 +3,7 @@ import { numbersForState } from "./numbersForState.js";
 import React from "react";
 
 var errorMessage = false;
-
+var notAsyncState;
 
 export default function Buttons({
   lowerDisplayNumber,
@@ -17,115 +17,124 @@ export default function Buttons({
     prevLowerNumber.current = lowerDisplayNumber;
   }, [lowerDisplayNumber]);
 
-
   let handleClick = (numberOrSymbol) => {
+    /// SHOWS DIGIT LIMIT ERROR ///
 
-/// SHOWS DIGIT LIMIT ERROR ///
-    
-    if (lowerDisplayNumber >= 999999999 && errorMessage === false) {
+    try {
+
+    if (numberOrSymbol === "clear") {
+      setLowerDisplayNumber("0");
+      setUpperDisplayNumber("");
+
+      errorMessage = false;
+    } else if (
+      (lowerDisplayNumber > 9999999999 ||
+      upperDisplayNumber.toString().length > 25) && errorMessage === false 
+    ) {
       errorMessage = true;
       setLowerDisplayNumber("ERROR - DIGIT LIMIT");
-      
-      console.log(error);
-    } 
 
-      ///AFTER EQUAL RESETS LOWER AND UPPER DISPLAY ///
 
-    else if (errorMessage === true) {
-      
-        setLowerDisplayNumber("0");
-        setUpperDisplayNumber("");
-     
-        errorMessage = false;
-        handleClick(numberOrSymbol)
-
-        
-
-        /// *** STRING STRING STRING *** ///
-      
     }
+
+    ///AFTER EQUAL RESETS LOWER AND UPPER DISPLAY ///
+    else if (
+      errorMessage === true &&
+      lowerDisplayNumber !== "ERROR - DIGIT LIMIT"
+    ) {
+      //removing "=" sign
+
+      // also it is necessary to store valuable to a different variable than state, because of asynchronous operation (state will not update in time, variable will) - necessary for "string" IF/ELSE IF operation below to work correctly
+
+      // using [prevLowerNumber.current[-1] or 3 seems better]
+      notAsyncState = Number(
+        prevLowerNumber.current.split(" ").splice(1, 1).join()
+      );
+      setLowerDisplayNumber(notAsyncState);
+      setUpperDisplayNumber(notAsyncState);
+
+      errorMessage = false;
+      handleClick(numberOrSymbol);
+      console.log(prevLowerNumber.current);
+      console.log(lowerDisplayNumber);
+      console.log(typeof lowerDisplayNumber);
+    }
+
+    /// *** STRING STRING STRING *** ///
     else if (typeof numberOrSymbol === "string" || errorMessage === true) {
-      if (numberOrSymbol === "clear") {
-        setLowerDisplayNumber("0");
-        setUpperDisplayNumber("");
-       
-        errorMessage = false;
-
-        
-
-        // Operation: *** /// --- +++
-      } else if (typeof prevLowerNumber.current === "string" && typeof numberOrSymbol === "string") {
-      setLowerDisplayNumber("WRONG INPUT");
-      console.log(prevLowerNumber.current)
-    }
-      else if (
+      // Operation: *** /// --- +++
+      if (
+        typeof prevLowerNumber.current === "string" &&
+        typeof numberOrSymbol === "string" &&
+        notAsyncState === undefined
+      ) {
+        setLowerDisplayNumber("ERROR-WRONG INPUT");
+      } else if (
         numberOrSymbol === "+" ||
         numberOrSymbol === "-" ||
         numberOrSymbol === "*" ||
-        numberOrSymbol === "/"
+        (numberOrSymbol === "/" && errorMessage === false)
       ) {
         setLowerDisplayNumber(numberOrSymbol.toString());
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-    
 
         //Operation: ... ,,,
       } else if (numberOrSymbol === "." || numberOrSymbol === ",") {
-        setLowerDisplayNumber((prevValue) => prevValue + numberOrSymbol);
+        setLowerDisplayNumber((prevValue) => `${prevValue}${numberOrSymbol}`);
         setUpperDisplayNumber((prevValue) => `${prevValue}${numberOrSymbol}`);
 
         //Operation: === Enter
       } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
-       
-        setLowerDisplayNumber("= " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000));
+        setLowerDisplayNumber(
+          "= " + Math.round(eval(upperDisplayNumber) * 1000) / 1000
+        );
         setUpperDisplayNumber(
-          (prevValue) => prevValue + " = " + (Math.round(eval(upperDisplayNumber) * 1000 ) / 1000)
-         
+          (prevValue) =>
+            prevValue +
+            " = " +
+            Math.round(eval(upperDisplayNumber) * 1000) / 1000
         );
         errorMessage = true;
- console.log(prevLowerNumber.current)
-  
-        
-
-        
-
+        console.log(prevLowerNumber.current);
+        console.log(errorMessage);
       }
-    } 
-    
+
+      notAsyncState = undefined;
+    }
+
     /// **** NUMBERS NUMBERS NUMBERS **** ///
-    
     else if (typeof numberOrSymbol === "number" && errorMessage === false) {
       if (
-        typeof numberOrSymbol === "number" &&
         typeof prevLowerNumber.current === "number"
       ) {
         setLowerDisplayNumber(
-          (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) *1
+          (prevValue) => (prevValue.toString() + numberOrSymbol.toString()) * 1
         );
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-      } else if (typeof numberOrSymbol === "number") {
-   
-        setLowerDisplayNumber(
-         numberOrSymbol
-        );
+      } else {
+        setLowerDisplayNumber(numberOrSymbol);
 
         setUpperDisplayNumber(
           (prevValue) => prevValue.toString() + numberOrSymbol.toString()
         );
-
-        
       }
     }
-  };
+  }
+    catch(err) {
+  setLowerDisplayNumber("ERROR - PRESS AC")
+}
+  }
+  //for keypress
 
   let handleKeyDown = (event) => {
-    //preventing Enter to do its default function - clicking last clicked buttons
-   
+    //works only for set characters in numberForState.js
     if (numbersForState.allKeyboardKeys.includes(event.key)) {
-    event.preventDefault();
+      //preventing Enter to do its default function - clicking last clicked buttons
+      event.preventDefault();
       event.key === "*" ||
       event.key === "/" ||
       event.key === "-" ||
@@ -140,17 +149,13 @@ export default function Buttons({
     }
   };
 
-  React.useEffect(
-    () => {
-      window.addEventListener("keydown", handleKeyDown);
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
 
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    },
-   
-    [lowerDisplayNumber]
-  );
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lowerDisplayNumber]);
 
   return (
     <div id="buttonGrid">
