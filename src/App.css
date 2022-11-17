@@ -1,5 +1,5 @@
-9body {
-  background-color: #d9d9d9;
+body {
+  background-color: #e1fef3;
   font-family: digital;
 
 }
@@ -12,13 +12,16 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border: 1px solid #00ff11;
+  
 
 }
 
 .display {
   width: 320px;
   height: 40px;
-  background-color: #787878;
+  background-color: #00756d;
+  
   color: #ffffff;
   display: grid;
   justify-content: end;
@@ -73,35 +76,35 @@ button {
   width: 80px;
   font-family: arial;
   font-size: 25px;
-  background-color: yellow;
-  border: 1px solid grey;
+  background-color: #e8e8e8;
+  border: 1px solid #99ffa0;
   
 }
 
 .notNumbers {
-  background-color: #ff8ffb;
+  background-color: #bdffd3;
 }
 
 #equals, #clear  {
-  background-color: #a353ee;
+  background-color: #cefecd;
 }
 
 
 #clear {
-  color: red;
+  color: #1e00ff;
 
 }
 
 
 button:hover, #equals:hover, #clear:hover {
-  background-color: orange;
+  background-color: #9ea1ff;
   color: white;
-  outline: 0.15em solid #ff3838;
+  outline: 0.15em solid #0040ff;
   z-index: 3;
 }
 
 button:active, #equals:active, #clear:active {
-  background-color: red;
+  background-color: #001eff;
 }
 
 #zero {

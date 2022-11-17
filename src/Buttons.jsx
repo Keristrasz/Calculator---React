@@ -88,19 +88,16 @@ export default function Buttons({
         //Operation: === Enter
       } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
         setLowerDisplayNumber(
-          "= " + Math.round(eval(upperDisplayNumber) * 1000) / 1000
+          "= " + Math.round(eval(upperDisplayNumber) * 10000) / 10000
         );
         setUpperDisplayNumber(
           (prevValue) =>
             prevValue +
             " = " +
-            Math.round(eval(upperDisplayNumber) * 1000) / 1000
+            Math.round(eval(upperDisplayNumber) * 10000) / 10000
         );
         errorMessage = true;
-        console.log(prevLowerNumber.current);
-        console.log(errorMessage);
       }
-
       notAsyncState = undefined;
     }
 
@@ -124,11 +121,12 @@ export default function Buttons({
       }
     }
   }
+      //using try and catch to show evaluation problems in lowerdisplay
     catch(err) {
-  setLowerDisplayNumber("ERROR - PRESS AC")
+  setLowerDisplayNumber("ERROR")
 }
   }
-  //for keypress
+  //function for keypress
 
   let handleKeyDown = (event) => {
     //works only for set characters in numberForState.js
@@ -148,6 +146,8 @@ export default function Buttons({
         : handleClick(Number(event.key));
     }
   };
+
+  //event listener for keypress
 
   React.useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
