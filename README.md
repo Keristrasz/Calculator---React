@@ -1,8 +1,8 @@
-# Basing Calculator in React
+# Basing Calculator in React on Replit
 
----
+## You can run this app on https://replit.com/@KarelJek/Calculator-React#src/App.jsx
 
-## Running React on Repl.it
+### Running React on Repl.it
 
 [React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
 
