@@ -1,5 +1,7 @@
 # Basing Calculator in React on Replit
 
+Basic Calculator in react, for basic math calculations.
+
 ## You can run this app on https://replit.com/@KarelJek/Calculator-React#src/App.jsx
 
 ### Running React on Repl.it
