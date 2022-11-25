@@ -1,4 +1,4 @@
-## Basing Calculator in React
+# Basing Calculator in React
 
 ---
 
