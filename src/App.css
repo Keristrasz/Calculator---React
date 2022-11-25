@@ -1,7 +1,6 @@
 body {
   background-color: #e1fef3;
   font-family: digital;
-
 }
 
 main {
@@ -13,7 +12,6 @@ main {
   left: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid #00ff11;
-  
 
 }
 
@@ -21,15 +19,11 @@ main {
   width: 320px;
   height: 40px;
   background-color: #00756d;
-  
   color: #ffffff;
   display: grid;
   justify-content: end;
   align-content: center;
   margin: auto;
-  
-  
-  
 }
 
 #upperDisplay {
@@ -40,14 +34,11 @@ main {
   margin-bottom: 10px;
 }
 
-
 #buttonGrid {
-  
   display: grid;
   grid-template-columns: 80px 80px 80px 80px;
   justify-content: center;
   align-content: center;
-
 }
 
 #add {
@@ -78,7 +69,6 @@ button {
   font-size: 25px;
   background-color: #e8e8e8;
   border: 1px solid #99ffa0;
-  
 }
 
 .notNumbers {
@@ -89,10 +79,8 @@ button {
   background-color: #cefecd;
 }
 
-
 #clear {
   color: #1e00ff;
-
 }
 
 

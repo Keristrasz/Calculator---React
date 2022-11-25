@@ -6,7 +6,6 @@ export default function UpperDisplay({upperDisplayNumber, realCalculation}) {
       
       <div><h4>{upperDisplayNumber}</h4></div>
       
-        
     </div>
   )
 }
