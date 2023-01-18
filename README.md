@@ -1,6 +1,6 @@
-# Basing Calculator in React on Replit
+# Basic Calculator in React on Replit
 
-Basic Calculator in react, for basic math calculations.
+Basic Calculator in react, for basic math calculations. You can use keyboard as well!
 
 ## You can run this app (or check the code) on https://replit.com/@KarelJek/Calculator-React#src/App.jsx
 
