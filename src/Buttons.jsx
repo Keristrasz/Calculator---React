@@ -1,5 +1,5 @@
 import "./App.css";
-import { numbersForState } from "./numbersForState.js";
+import { numbersAndOperations } from "./numbersAndOperations.js";
 import React from "react";
 
 var errorMessage = false;
@@ -23,7 +23,7 @@ export default function Buttons({
 
     try {
 
-      if (numberOrSymbol === "clear") {
+      if (numberOrSymbol === "AC") {
         setLowerDisplayNumber("0");
         setUpperDisplayNumber("");
 
@@ -47,26 +47,22 @@ export default function Buttons({
         // also it is necessary to store valuable to a different variable than state, because of asynchronous operation (state will not update in time, variable will) - necessary for "string" IF/ELSE IF operation below to work correctly
 
         // using [prevLowerNumber.current[-1] or 3 also option]
-        
+
         notAsyncState = Number(
           prevLowerNumber.current.split(" ").splice(1, 1).join()
         );
         setLowerDisplayNumber(notAsyncState);
         setUpperDisplayNumber(notAsyncState);
-
         errorMessage = false;
         handleClick(numberOrSymbol);
-        console.log(prevLowerNumber.current);
-        console.log(lowerDisplayNumber);
-        console.log(typeof lowerDisplayNumber);
       }
 
       /// *** STRING STRING STRING *** ///
-        
+
       else if (typeof numberOrSymbol === "string" || errorMessage === true) {
-        
+
         // Operation: *** /// --- +++
-        
+
         if (
           typeof prevLowerNumber.current === "string" &&
           typeof numberOrSymbol === "string" &&
@@ -85,13 +81,13 @@ export default function Buttons({
           );
 
           //Operation: ... ,,,
-          
+
         } else if (numberOrSymbol === "." || numberOrSymbol === ",") {
           setLowerDisplayNumber((prevValue) => `${prevValue}${numberOrSymbol}`);
           setUpperDisplayNumber((prevValue) => `${prevValue}${numberOrSymbol}`);
 
           //Operation: === Enter
-          
+
         } else if (numberOrSymbol === "=" || numberOrSymbol === "Enter") {
           setLowerDisplayNumber(
             "= " + Math.round(eval(upperDisplayNumber) * 10000) / 10000
@@ -108,7 +104,7 @@ export default function Buttons({
       }
 
       /// **** NUMBERS NUMBERS NUMBERS **** ///
-        
+
       else if (typeof numberOrSymbol === "number" && errorMessage === false) {
         if (
           typeof prevLowerNumber.current === "number"
@@ -128,32 +124,26 @@ export default function Buttons({
         }
       }
     }
-      
+
     //using try and catch to show evaluation problems in lowerdisplay
-      
+
     catch (err) {
       setLowerDisplayNumber("ERROR")
     }
   }
-  
+
   //function for keyboard press
 
   let handleKeyDown = (event) => {
-    
+
     //works only for set characters in numberForState.js
-    
-    if (numbersForState.allKeyboardKeys.includes(event.key)) {
-      
+
+    if (numbersAndOperations.all.includes(event.key)) {
+
       //preventing Enter to do its default function - clicking last clicked buttons
-      
+
       event.preventDefault();
-      event.key === "*" ||
-        event.key === "/" ||
-        event.key === "-" ||
-        event.key === "+" ||
-        event.key === "Enter" ||
-        event.key === "=" ||
-        event.key === "."
+      numbersAndOperations.operations.includes(event.key)
         ? handleClick(event.key)
         : event.key === ","
           ? handleClick(".")
@@ -175,8 +165,8 @@ export default function Buttons({
     <div id="buttonGrid">
       <button
         className="myButtons  notNumbers"
-        onClick={() => handleClick("clear")}
-        id="clear"
+        onClick={() => handleClick("AC")}
+        id="AC"
       >
         AC
       </button>
